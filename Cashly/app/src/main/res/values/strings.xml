@@ -7,4 +7,6 @@
     <string name="bills">Bills</string>
     <string name="sort">Sort</string>
     <string name="see_all">SEE ALL</string>
+    <string name="alert_message">Heads up, you\'ve used up 90% of your Shopping budget for this month.</string>
+    <string name="alert_button_text">Dismiss</string>
 </resources>

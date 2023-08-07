@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import chn.phm.cashly.R
 import chn.phm.cashly.data.UserData
 import chn.phm.cashly.ui.common.AccountRow
+import chn.phm.cashly.ui.common.BillRow
 import chn.phm.cashly.ui.common.CashlyAlertDialog
 import chn.phm.cashly.ui.common.CashlyDivider
 import chn.phm.cashly.utils.formatAmount
@@ -56,8 +57,13 @@ fun OverviewScreen(
             onClickSeeAll = {},
             onAccountClick = {}
         )
+        Spacer(Modifier.height(CashlyDefaultPadding))
+        BillsCard(
+            onClickSeeAll = {}
+        )
     }
 }
+
 
 @Composable
 private fun AlertCard() {
@@ -158,13 +164,37 @@ private fun AccountsCard(onClickSeeAll: () -> Unit, onAccountClick: (String) -> 
             it.color
         },
         data = UserData.accounts
-    ) {account ->
+    ) { account ->
         AccountRow(
             modifier = Modifier.clickable { onAccountClick(account.name) },
             name = account.name,
             number = account.number,
             amount = account.balance,
             color = account.color
+        )
+    }
+}
+
+@Composable
+fun BillsCard(onClickSeeAll: () -> Unit) {
+    val amount = UserData.bills.map { bill -> bill.amount }.sum()
+    OverviewScreenCard(
+        title = stringResource(id = R.string.bills),
+        amount = amount,
+        onClickSeeAll = onClickSeeAll,
+        values = {
+            it.amount
+        },
+        colors = {
+            it.color
+        },
+        data = UserData.bills
+    ) { bill ->
+        BillRow(
+            name = bill.name,
+            due = bill.due,
+            amount = bill.amount,
+            color = bill.color
         )
     }
 }

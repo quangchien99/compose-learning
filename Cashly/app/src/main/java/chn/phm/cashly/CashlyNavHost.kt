@@ -7,8 +7,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import chn.phm.cashly.ui.screens.AccountsScreen
+import chn.phm.cashly.ui.screens.BillsScreen
 import chn.phm.cashly.ui.screens.OverviewScreen
 import chn.phm.cashly.ui.screens.SingleAccountScreen
+import chn.phm.cashly.ui.screens.SingleBillScreen
 
 @Composable
 fun CashlyNavHost(
@@ -27,7 +29,10 @@ fun CashlyNavHost(
                     navHostController.navigateToSingleAccount(accountType)
                 },
                 onClickSeeAllBills = {
-
+                    navHostController.navigateSingleTopTo(Bills.route)
+                },
+                onBillClick = { billName ->
+                    navHostController.navigateToSingleBill(billName)
                 }
             )
         }
@@ -38,6 +43,24 @@ fun CashlyNavHost(
                     navHostController.navigateToSingleAccount(accountType)
                 }
             )
+        }
+
+        composable(route = Bills.route) {
+            BillsScreen(
+                onBillClick = { billName ->
+                    navHostController.navigateToSingleBill(billName)
+                }
+            )
+        }
+
+        composable(
+            route = SingleBill.routeWithArgs,
+            arguments = SingleBill.arguments,
+            deepLinks = SingleBill.deepLinks
+        ) { navBackStackEntry ->
+            val billName =
+                navBackStackEntry.arguments?.getString(SingleBill.billNameArg)
+            SingleBillScreen(billName)
         }
 
         composable(
@@ -65,10 +88,14 @@ fun NavHostController.navigateSingleTopTo(route: String) =
         // Avoid multiple copies of the same destination when
         // re-selecting the same item
         launchSingleTop = true
-        // Restore state when reselecting a previously selected item
+        // Restore state when re-selecting a previously selected item
         restoreState = true
     }
 
 private fun NavHostController.navigateToSingleAccount(accountType: String) {
     this.navigateSingleTopTo("${SingleAccount.route}/$accountType")
+}
+
+private fun NavHostController.navigateToSingleBill(billName: String) {
+    this.navigateSingleTopTo("${SingleBill.route}/$billName")
 }

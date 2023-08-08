@@ -3,6 +3,7 @@ package chn.phm.cashly
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.Money
+import androidx.compose.material.icons.filled.MoneyOff
 import androidx.compose.material.icons.filled.PieChart
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavType
@@ -31,6 +32,11 @@ object Accounts : CashlyDestination {
     override val route = "accounts"
 }
 
+object Bills : CashlyDestination {
+    override val icon = Icons.Filled.MoneyOff
+    override val route = "bills"
+}
+
 object SingleAccount : CashlyDestination {
     // Added for simplicity, this icon will not in fact be used, as SingleAccount isn't
     // part of the CashlyTabRow selection
@@ -46,5 +52,20 @@ object SingleAccount : CashlyDestination {
     )
 }
 
+object SingleBill : CashlyDestination {
+    // Added for simplicity, this icon will not in fact be used, as SingleBill isn't
+    // part of the CashlyTabRow selection
+    override val icon = Icons.Filled.MoneyOff
+    override val route = "single_bill"
+    const val billNameArg = "bill_name"
+    val routeWithArgs = "$route/{$billNameArg}"
+    val arguments = listOf(
+        navArgument(billNameArg) { type = NavType.StringType }
+    )
+    val deepLinks = listOf(
+        navDeepLink { uriPattern = "cashly://$route/{$billNameArg}" }
+    )
+}
+
 // Screens to be displayed in the top CashlyTabRow
-val cashlyTabRowScreens = listOf(Overview, Accounts)
+val cashlyTabRowScreens = listOf(Overview, Accounts, Bills)

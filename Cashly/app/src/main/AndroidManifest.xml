@@ -29,6 +29,10 @@
                 <data
                     android:host="single_account"
                     android:scheme="cashly" />
+
+                <data
+                    android:host="single_bill"
+                    android:scheme="cashly" />
             </intent-filter>
         </activity>
     </application>

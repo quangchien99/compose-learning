@@ -43,7 +43,9 @@ import chn.phm.cashly.utils.formatAmount
 
 @Composable
 fun OverviewScreen(
-
+    onClickSeeAllAccounts: () -> Unit = {},
+    onClickSeeAllBills: () -> Unit = {},
+    onAccountClick: (String) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -54,12 +56,12 @@ fun OverviewScreen(
         AlertCard()
         Spacer(modifier = Modifier.height(CashlyDefaultPadding))
         AccountsCard(
-            onClickSeeAll = {},
-            onAccountClick = {}
+            onClickSeeAll = onClickSeeAllAccounts,
+            onAccountClick = onAccountClick
         )
         Spacer(Modifier.height(CashlyDefaultPadding))
         BillsCard(
-            onClickSeeAll = {}
+            onClickSeeAll = onClickSeeAllBills
         )
     }
 }
@@ -157,13 +159,13 @@ private fun AccountsCard(onClickSeeAll: () -> Unit, onAccountClick: (String) -> 
         title = stringResource(id = R.string.accounts),
         amount = amount,
         onClickSeeAll = onClickSeeAll,
+        data = UserData.accounts,
         values = {
             it.balance
         },
         colors = {
             it.color
-        },
-        data = UserData.accounts
+        }
     ) { account ->
         AccountRow(
             modifier = Modifier.clickable { onAccountClick(account.name) },
@@ -182,13 +184,13 @@ fun BillsCard(onClickSeeAll: () -> Unit) {
         title = stringResource(id = R.string.bills),
         amount = amount,
         onClickSeeAll = onClickSeeAll,
+        data = UserData.bills,
         values = {
             it.amount
         },
         colors = {
             it.color
-        },
-        data = UserData.bills
+        }
     ) { bill ->
         BillRow(
             name = bill.name,

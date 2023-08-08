@@ -2,15 +2,20 @@ package chn.phm.cashly.ui.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
@@ -27,6 +32,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.unit.dp
 import chn.phm.cashly.R
 import chn.phm.cashly.utils.AccountDecimalFormat
+import chn.phm.cashly.utils.extractProportions
 import chn.phm.cashly.utils.formatAmount
 
 @Composable
@@ -141,4 +147,53 @@ private fun AccountIndicator(color: Color, modifier: Modifier = Modifier) {
             .size(4.dp, 36.dp)
             .background(color = color)
     )
+}
+
+@Composable
+fun <T> DetailBody(
+    modifier: Modifier = Modifier,
+    items: List<T>,
+    colors: (T) -> Color,
+    amounts: (T) -> Float,
+    totalAmount: Float,
+    circleLabel: String,
+    rows: @Composable (T) -> Unit
+) {
+    Column(modifier = modifier.verticalScroll(rememberScrollState())) {
+        Box(modifier = Modifier.padding(16.dp)) {
+            val accountsProportion = items.extractProportions {
+                amounts(it)
+            }
+            val circleColors = items.map { colors(it) }
+
+            CashlyAnimatedCircle(
+                proportions = accountsProportion,
+                colors = circleColors,
+                modifier = Modifier
+                    .height(300.dp)
+                    .align(Alignment.Center)
+                    .fillMaxWidth()
+            )
+            Column(modifier = Modifier.align(Alignment.Center)) {
+                Text(
+                    text = circleLabel,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
+                Text(
+                    text = formatAmount(totalAmount),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+        Card {
+            Column(modifier = Modifier.padding(12.dp)) {
+                items.forEach { item ->
+                    rows(item)
+                }
+            }
+        }
+    }
 }

@@ -13,7 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import chn.phm.cashly.ui.common.CashlyTabRow
 import chn.phm.cashly.ui.theme.CashlyTheme
 
-class MainActivity : ComponentActivity() {
+class CashlyActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

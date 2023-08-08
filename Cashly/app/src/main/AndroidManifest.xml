@@ -12,14 +12,23 @@
         android:theme="@style/Theme.Cashly"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name="CashlyActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.Cashly">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="single_account"
+                    android:scheme="cashly" />
             </intent-filter>
         </activity>
     </application>
